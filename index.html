@@ -1,117 +1,197 @@
 <!DOCTYPE html>
-<<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Apple the Parrot | Crypto Carnival</title>
+  <title>Apple the Parrot - Crypto Carnival</title>
   <style>
-    /* --- CSS styling here --- */
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #e6f7ff;
       text-align: center;
-    }
-    header {
-      background: #4CAF50;
-      color: white;
-      padding: 1em;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-    }
-    nav ul li {
-      display: inline;
-      margin: 0 10px;
-    }
-    nav ul li a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    section {
-      margin: 20px;
+      background-color: #e0f7fa;
       padding: 20px;
     }
-    footer {
-      background: #333;
-      color: white;
-      padding: 1em;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
+    h1 {
+      color: #00796b;
     }
-    button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      font-size: 16px;
-      margin-top: 20px;
-      cursor: pointer;
-      border-radius: 8px;
-    }
-    img.ad {
-      margin-top: 20px;
+    img {
       width: 200px;
       height: auto;
+      margin: 20px 0;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+    #progress {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #004d40;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #d32f2f;
     }
   </style>
 </head>
-
 <body>
 
-<header>
-  <h1>Apple the Parrot</h1>
-  <nav>
-    <ul>
-      <li><a href="#game">Grow</a></li>
-      <li><a href="#rewards">Rewards</a></li>
-      <li><a href="#ads">Ads</a></li>
-    </ul>
-  </nav>
-</header>
+  <h1>Welcome to Apple the Parrot!</h1>
+  
+  <div id="game-area">
+    <button id="collect-egg-btn">Collect Egg</button>
+    <div id="egg-stage" style="display:none;">
+      <img id="egg-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Egg.svg/1200px-Egg.svg.png" alt="Egg">
+      <p>Daily Action: <button id="give-light-btn">Give Light</button></p>
+      <div id="egg-progress"></div>
+    </div>
 
-<section id="game">
-  <h2>Grow Your Parrot!</h2>
-  <p>Start with an egg. Hatch it. Raise Apple the Parrot!</p>
-  <img src="https://via.placeholder.com/150" alt="Egg Image">
-  <br>
-  <button onclick="hatchEgg()">Hatch Egg</button>
-  <div id="growthMessage" style="margin-top:20px; font-size:20px;"></div>
-</section>
+    <div id="hatch-stage" style="display:none;">
+      <img id="parrot-image" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Green_parrot_cartoon.png" alt="Parrot">
+      <p>Daily Action: <button id="feed-apple-btn">Feed Apple</button></p>
+      <div id="parrot-progress"></div>
+    </div>
 
-<section id="rewards">
-  <h2>Earn Crypto Rewards!</h2>
-  <p>Grow Apple to earn <strong>Apple Conyer Coin</strong> and your <strong>Aj Badge</strong>!</p>
-  <button onclick="claimReward()">Claim Your Reward</button>
-</section>
+    <div id="reward-stage" style="display:none;">
+      <p id="happiness-status"></p>
+      <button id="claim-reward-btn">Claim Reward</button>
+    </div>
 
-<section id="ads">
-  <h2>Sponsored Ads</h2>
-  <p>Support Crypto Carnival by checking our sponsors!</p>
-  <img class="ad" src="https://via.placeholder.com/200x100" alt="Ad Placeholder">
-</section>
+    <div id="progress"></div>
+    <div id="message"></div>
+  </div>
 
-<footer>
-  <p>© 2025 Crypto Carnival created by Bigdaddyaz82| Apple the Parrot</p>
-</footer>
+  <script>
+    // Game Variables
+    const collectEggBtn = document.getElementById('collect-egg-btn');
+    const giveLightBtn = document.getElementById('give-light-btn');
+    const feedAppleBtn = document.getElementById('feed-apple-btn');
+    const claimRewardBtn = document.getElementById('claim-reward-btn');
+    const eggStage = document.getElementById('egg-stage');
+    const hatchStage = document.getElementById('hatch-stage');
+    const rewardStage = document.getElementById('reward-stage');
+    const eggProgress = document.getElementById('egg-progress');
+    const parrotProgress = document.getElementById('parrot-progress');
+    const happinessStatus = document.getElementById('happiness-status');
+    const message = document.getElementById('message');
 
-<script>
-  // --- JavaScript here ---
-  function hatchEgg() {
-    document.getElementById('growthMessage').innerText = "Congratulations! Your egg hatched into Apple the Parrot!";
-  }
+    // Load Game State
+    let state = JSON.parse(localStorage.getItem('appleGameState')) || {
+      eggCollected: false,
+      eggStartDate: null,
+      eggCareDays: 0,
+      eggHatched: false,
+      parrotStartDate: null,
+      parrotCareDays: 0,
+      rewardClaimed: false
+    };
 
-  function claimReward() {
-    alert("You have earned Apple Conyer Coin and your Badge! Check your wallet soon.");
-  }
-</script>
+    function saveState() {
+      localStorage.setItem('appleGameState', JSON.stringify(state));
+    }
+
+    function daysSince(dateString) {
+      const then = new Date(dateString);
+      const now = new Date();
+      const diffTime = now - then;
+      return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    }
+
+    function updateGame() {
+      if (!state.eggCollected) {
+        collectEggBtn.style.display = 'inline-block';
+        eggStage.style.display = 'none';
+        hatchStage.style.display = 'none';
+        rewardStage.style.display = 'none';
+      } else if (!state.eggHatched) {
+        collectEggBtn.style.display = 'none';
+        eggStage.style.display = 'block';
+        hatchStage.style.display = 'none';
+        rewardStage.style.display = 'none';
+        eggProgress.innerText = `Egg Care: ${state.eggCareDays}/3 days`;
+      } else if (!state.rewardClaimed) {
+        collectEggBtn.style.display = 'none';
+        eggStage.style.display = 'none';
+        hatchStage.style.display = 'block';
+        rewardStage.style.display = 'none';
+        parrotProgress.innerText = `Feeding Progress: ${state.parrotCareDays}/3 days`;
+      } else {
+        collectEggBtn.style.display = 'none';
+        eggStage.style.display = 'none';
+        hatchStage.style.display = 'none';
+        rewardStage.style.display = 'block';
+      }
+    }
+
+    collectEggBtn.addEventListener('click', () => {
+      state.eggCollected = true;
+      state.eggStartDate = new Date().toISOString();
+      state.eggCareDays = 0;
+      saveState();
+      updateGame();
+    });
+
+    giveLightBtn.addEventListener('click', () => {
+      if (daysSince(state.eggStartDate) >= state.eggCareDays) {
+        state.eggCareDays++;
+        saveState();
+        eggProgress.innerText = `Egg Care: ${state.eggCareDays}/3 days`;
+        message.innerText = "You gave light to the egg!";
+        if (state.eggCareDays >= 3) {
+          state.eggHatched = true;
+          state.parrotStartDate = new Date().toISOString();
+          state.parrotCareDays = 0;
+          saveState();
+          updateGame();
+          message.innerText = "Your egg hatched! Meet Apple the Parrot!";
+        }
+      } else {
+        message.innerText = "Come back tomorrow to give more light!";
+      }
+    });
+
+    feedAppleBtn.addEventListener('click', () => {
+      if (daysSince(state.parrotStartDate) >= state.parrotCareDays) {
+        state.parrotCareDays++;
+        saveState();
+        parrotProgress.innerText = `Feeding Progress: ${state.parrotCareDays}/3 days`;
+        message.innerText = "You fed Apple!";
+        if (state.parrotCareDays >= 3) {
+          rewardStage.style.display = 'block';
+          hatchStage.style.display = 'none';
+          if (state.parrotCareDays === 3) {
+            happinessStatus.innerText = "Apple is Happy! Big Bonus Awaits!";
+          } else {
+            happinessStatus.innerText = "Apple is Sad. Small Bonus Awaits.";
+          }
+        }
+      } else {
+        message.innerText = "Come back tomorrow to feed Apple!";
+      }
+    });
+
+    claimRewardBtn.addEventListener('click', () => {
+      state.rewardClaimed = true;
+      saveState();
+      updateGame();
+      if (state.parrotCareDays === 3) {
+        message.innerText = "You received a BIG bonus! Thank you for taking care of Apple!";
+      } else {
+        message.innerText = "You received a SMALL bonus! Try to care more next time!";
+      }
+    });
+
+    updateGame();
+  </script>
 
 </body>
 </html>
