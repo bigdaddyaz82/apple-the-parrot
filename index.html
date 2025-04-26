@@ -1,3 +1,7 @@
+# Let's write the code for the updated game with the intro screen and wallet connection.
+
+intro_screen_html = """
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -112,41 +116,7 @@ with open("/mnt/data/apple_the_parrot_game.html", "w") as file:
 
 
 
-"/mnt/data/apple_the_parrot_game.html"        if (state.eggCareDays >= 3) {
-          state.eggHatched = true;
-          state.parrotStartDate = new Date().toISOString();
-          state.parrotCareDays = 0;
-          saveState();
-          updateGame();
-          message.innerText = "Your egg hatched! Meet Apple the Parrot!";
-        }
-      } else {
-        message.innerText = "Come back tomorrow to give more light!";
-      }
-    });
-
-    feedAppleBtn.addEventListener('click', () => {
-      if (daysSince(state.parrotStartDate) >= state.parrotCareDays) {
-        state.parrotCareDays++;
-        saveState();
-        parrotProgress.innerText = `Feeding Progress: ${state.parrotCareDays}/3 days`;
-        message.innerText = "You fed Apple!";
-        if (state.parrotCareDays >= 3) {
-          rewardStage.style.display = 'block';
-          hatchStage.style.display = 'none';
-          if (state.parrotCareDays === 3) {
-            happinessStatus.innerText = "Apple is Happy! Big Bonus Awaits!";
-          } else {
-            happinessStatus.innerText = "Apple is Sad. Small Bonus Awaits.";
-          }
-        }
-      } else {
-        message.innerText = "Come back tomorrow to feed Apple!";
-      }
-    });
-
-    claimRewardBtn.addEventListener('click', () => {
-      state.rewardClaimed = true;
+"/mnt/data/apple_the_parrot_game.html"      state.rewardClaimed = true;
       saveState();
       updateGame();
       if (state.parrotCareDays === 3) {
