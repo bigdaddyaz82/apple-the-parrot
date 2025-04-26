@@ -1,152 +1,118 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Apple the Parrot - Crypto Carnival</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #e0f7fa;
-      padding: 20px;
-    }
-    h1 {
-      color: #00796b;
-    }
-    img {
-      width: 200px;
-      height: auto;
-      margin: 20px 0;
-    }
-    button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 18px;
-      background-color: #00796b;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #004d40;
-    }
-    #progress {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #004d40;
-    }
-    #message {
-      margin-top: 20px;
-      font-size: 20px;
-      color: #d32f2f;
-    }
-  </style>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Apple the Parrot - Crypto Carnival</title>
+
+    <style>
+
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; color: #333; }
+
+        .button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 18px; }
+
+        .header { font-size: 36px; color: #2c3e50; margin-top: 50px; }
+
+        .sub-header { font-size: 24px; color: #7f8c8d; }
+
+        .game-container { display: none; }
+
+        .reward { color: #27ae60; font-size: 22px; margin-top: 20px; }
+
+    </style>
+
 </head>
+
 <body>
 
-  <h1>Welcome to Apple the Parrot!</h1>
-  
-  <div id="game-area">
-    <button id="collect-egg-btn">Collect Egg</button>
-    <div id="egg-stage" style="display:none;">
-      <img id="egg-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Egg.svg/1200px-Egg.svg.png" alt="Egg">
-      <p>Daily Action: <button id="give-light-btn">Give Light</button></p>
-      <div id="egg-progress"></div>
+
+
+    <div class="intro-screen">
+
+        <h1 class="header">Welcome to Apple the Parrot!</h1>
+
+        <p class="sub-header">Created by Big Daddy AZ, Crypto Carnival Entertainment</p>
+
+        <button class="button" onclick="startAdventure()">Start Adventure</button>
+
     </div>
 
-    <div id="hatch-stage" style="display:none;">
-      <img id="parrot-image" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Green_parrot_cartoon.png" alt="Parrot">
-      <p>Daily Action: <button id="feed-apple-btn">Feed Apple</button></p>
-      <div id="parrot-progress"></div>
+
+
+    <div class="game-container">
+
+        <!-- Game screen will be here after intro -->
+
+        <h2>You're about to hatch your own parrot!</h2>
+
+        <button class="button" onclick="connectWallet()">Connect Wallet</button>
+
+        <div class="reward" id="reward-message"></div>
+
     </div>
 
-    <div id="reward-stage" style="display:none;">
-      <p id="happiness-status"></p>
-      <button id="claim-reward-btn">Claim Reward</button>
-    </div>
 
-    <div id="progress"></div>
-    <div id="message"></div>
-  </div>
 
-  <script>
-    // Game Variables
-    const collectEggBtn = document.getElementById('collect-egg-btn');
-    const giveLightBtn = document.getElementById('give-light-btn');
-    const feedAppleBtn = document.getElementById('feed-apple-btn');
-    const claimRewardBtn = document.getElementById('claim-reward-btn');
-    const eggStage = document.getElementById('egg-stage');
-    const hatchStage = document.getElementById('hatch-stage');
-    const rewardStage = document.getElementById('reward-stage');
-    const eggProgress = document.getElementById('egg-progress');
-    const parrotProgress = document.getElementById('parrot-progress');
-    const happinessStatus = document.getElementById('happiness-status');
-    const message = document.getElementById('message');
+    <script>
 
-    // Load Game State
-    let state = JSON.parse(localStorage.getItem('appleGameState')) || {
-      eggCollected: false,
-      eggStartDate: null,
-      eggCareDays: 0,
-      eggHatched: false,
-      parrotStartDate: null,
-      parrotCareDays: 0,
-      rewardClaimed: false
-    };
+        function startAdventure() {
 
-    function saveState() {
-      localStorage.setItem('appleGameState', JSON.stringify(state));
-    }
+            document.querySelector('.intro-screen').style.display = 'none';
 
-    function daysSince(dateString) {
-      const then = new Date(dateString);
-      const now = new Date();
-      const diffTime = now - then;
-      return Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    }
+            document.querySelector('.game-container').style.display = 'block';
 
-    function updateGame() {
-      if (!state.eggCollected) {
-        collectEggBtn.style.display = 'inline-block';
-        eggStage.style.display = 'none';
-        hatchStage.style.display = 'none';
-        rewardStage.style.display = 'none';
-      } else if (!state.eggHatched) {
-        collectEggBtn.style.display = 'none';
-        eggStage.style.display = 'block';
-        hatchStage.style.display = 'none';
-        rewardStage.style.display = 'none';
-        eggProgress.innerText = `Egg Care: ${state.eggCareDays}/3 days`;
-      } else if (!state.rewardClaimed) {
-        collectEggBtn.style.display = 'none';
-        eggStage.style.display = 'none';
-        hatchStage.style.display = 'block';
-        rewardStage.style.display = 'none';
-        parrotProgress.innerText = `Feeding Progress: ${state.parrotCareDays}/3 days`;
-      } else {
-        collectEggBtn.style.display = 'none';
-        eggStage.style.display = 'none';
-        hatchStage.style.display = 'none';
-        rewardStage.style.display = 'block';
-      }
-    }
+        }
 
-    collectEggBtn.addEventListener('click', () => {
-      state.eggCollected = true;
-      state.eggStartDate = new Date().toISOString();
-      state.eggCareDays = 0;
-      saveState();
-      updateGame();
-    });
+        
 
-    giveLightBtn.addEventListener('click', () => {
-      if (daysSince(state.eggStartDate) >= state.eggCareDays) {
-        state.eggCareDays++;
-        saveState();
-        eggProgress.innerText = `Egg Care: ${state.eggCareDays}/3 days`;
-        message.innerText = "You gave light to the egg!";
-        if (state.eggCareDays >= 3) {
+        function connectWallet() {
+
+            // Simulate wallet connection
+
+            const walletConnected = true;
+
+            if(walletConnected) {
+
+                // Simulate token reward after connecting wallet
+
+                document.getElementById('reward-message').innerHTML = "You have received: 10 Adge Badge Tokens, 5 Apple Conyer Coins, and 5 Aj Badge!";
+
+                // Add the real reward logic here (e.g., web3.js, ethers.js to transfer tokens).
+
+            } else {
+
+                document.getElementById('reward-message').innerHTML = "Please connect your wallet to receive your rewards.";
+
+            }
+
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>
+
+"""
+
+
+
+# Save the HTML content to a file
+
+with open("/mnt/data/apple_the_parrot_game.html", "w") as file:
+
+    file.write(intro_screen_html)
+
+
+
+"/mnt/data/apple_the_parrot_game.html"        if (state.eggCareDays >= 3) {
           state.eggHatched = true;
           state.parrotStartDate = new Date().toISOString();
           state.parrotCareDays = 0;
