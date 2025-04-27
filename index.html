@@ -10,6 +10,8 @@
             background-color: #9eff99;
             text-align: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
         }
         .button {
             background-color: #4CAF50;
@@ -38,6 +40,37 @@
         .egg img {
             width: 100%;
         }
+        .banner {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 16px;
+            z-index: 9999;
+            animation: scrollBanner 10s linear infinite;
+        }
+        @keyframes scrollBanner {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: floatBalloon 10s infinite;
+        }
+        .balloon:nth-child(2) { background-color: #ff0; animation-duration: 12s; }
+        .balloon:nth-child(3) { background-color: #0f0; animation-duration: 14s; }
+        .balloon:nth-child(4) { background-color: #ff7f00; animation-duration: 16s; }
+        @keyframes floatBalloon {
+            0% { bottom: -100px; left: 10%; }
+            100% { bottom: 100%; left: 80%; }
+        }
     </style>
 </head>
 <body>
@@ -56,9 +89,17 @@
     <div class="footer">
         <p>Created by BigDaddyAZ for Crypto Carnival Entertainment</p>
         <p>S.O.B., SpaceX Affiliated and Sponsored by Reynolds Painting & Resurfacing, LLC</p>
-        <p><button class="button" onclick="connectWallet()">Connect Wallet</button></p>
     </div>
 
+    <div class="banner">
+        <p>Run your ads here! Sponsored by Reynolds Painting & Resurfacing!</p>
+    </div>
+
+    <div class="balloon" style="left: 5%; animation-duration: 12s;"></div>
+    <div class="balloon" style="left: 25%; animation-duration: 14s;"></div>
+    <div class="balloon" style="left: 45%; animation-duration: 16s;"></div>
+    <div class="balloon" style="left: 65%; animation-duration: 18s;"></div>
+    
     <script>
         let eggHatched = false;
         let lightGiven = 0;
@@ -100,11 +141,6 @@
                 document.getElementById("eggImage").src = "parrot.png";
                 document.getElementById("status").innerHTML = "Apple the Parrot has hatched!";
             }
-        }
-
-        function connectWallet() {
-            // Your wallet connection logic here
-            alert("Connecting wallet... You will receive 5 Adge Badge and 5 Apple Conyer coins.");
         }
     </script>
 </body>
