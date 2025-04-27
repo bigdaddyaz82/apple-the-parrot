@@ -1,122 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Apple the Parrot - Crypto Carnival</title>
-  <style>
-    body {
-      background-color: #d0f0c0;
-      font-family: 'Press Start 2P', cursive, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    .game-container {
-      background: #fff;
-      border: 5px solid #000;
-      border-radius: 15px;
-      padding: 20px;
-      display: inline-block;
-      margin-top: 20px;
-    }
-    .button {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin: 10px;
-      cursor: pointer;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 10px;
-    }
-    .egg, .parrot {
-      font-size: 80px;
-      margin: 20px 0;
-    }
-    .reward-animation {
-      font-size: 20px;
-      color: #FF5722;
-      margin-top: 15px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple the Parrot</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            padding-top: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #3498db;
+        }
+
+        .egg, .parrot {
+            display: none;
+            width: 200px;
+            height: 200px;
+            margin-top: 20px;
+        }
+
+        .egg {
+            background-color: yellow;
+            border-radius: 50%;
+        }
+
+        .parrot {
+            background-color: green;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .reward {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        .countdown {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .sparkles {
+            position: absolute;
+            animation: sparkle 1.5s infinite;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(0.8); }
+        }
+    </style>
 </head>
 <body>
 
-  <h1>Apple the Parrot</h1>
-  <p>Created by BigDaddyAZ82 | Crypto Carnival Entertainment</p>
-
-  <div class="game-container">
-    <div id="game-stage">
-      <div class="egg">🥚</div>
-      <p>Click the button to collect your egg!</p>
-      <button class="button" onclick="collectEgg()">Collect Egg</button>
+    <h1>Apple the Parrot Game</h1>
+    <div class="egg"></div>
+    <div class="parrot">
+        <div class="sparkles"></div>
     </div>
-    <br>
-    <button id="connectWalletBtn" class="button">Connect Wallet & Get Reward</button>
-    <div id="rewardMessage" class="reward-animation"></div>
-  </div>
 
-  <script>
-    let eggCollected = false;
-    let daysWithEgg = 0;
-    let eggHatched = false;
-    let parrotFed = false;
-    let walletConnected = false;
+    <p id="message">Hit the button to hatch your egg!</p>
+    
+    <button class="button" onclick="startGame()">Start</button>
+    
+    <p id="reward" class="reward"></p>
+    <p id="countdown" class="countdown"></p>
 
-    function collectEgg() {
-      if (!eggCollected) {
-        document.getElementById('game-stage').innerHTML = `
-          <div class="egg">🥚</div>
-          <p>You've collected an egg! Come back daily to give it light!</p>
-          <button class="button" onclick="giveLight()">Give Light</button>
-        `;
-        eggCollected = true;
-      }
-    }
+    <script>
+        let eggHatched = false;
+        let eggTimer = 24 * 60 * 60 * 1000; // 24 hours
+        let lightGiven = false;
+        let rewardGiven = false;
 
-    function giveLight() {
-      daysWithEgg++;
-      if (daysWithEgg >= 3 && !eggHatched) {
-        hatchEgg();
-      } else {
-        alert(`You gave light to your egg! Days with light: ${daysWithEgg}`);
-      }
-    }
+        function startGame() {
+            document.querySelector('.egg').style.display = 'block';
+            document.getElementById('message').textContent = "Waiting to hatch...";
 
-    function hatchEgg() {
-      eggHatched = true;
-      document.getElementById('game-stage').innerHTML = `
-        <div class="parrot">🦜</div>
-        <p>Your egg has hatched into Apple the Parrot!</p>
-        <button class="button" onclick="feedParrot()">Feed Apple</button>
-      `;
-    }
-
-    function feedParrot() {
-      parrotFed = true;
-      alert("Apple the Parrot is happy! You earn bigger bonuses!");
-    }
-
-    async function connectWalletAndReward() {
-      if (typeof window.ethereum !== 'undefined') {
-        try {
-          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-          const userAddress = accounts[0];
-          walletConnected = true;
-          document.getElementById('rewardMessage').innerText =
-            `Wallet Connected: ${userAddress}
-            You earned 5 Adge Badge + 5 Apple Conyer Coins!`;
-        } catch (error) {
-          console.error(error);
-          alert('Connection failed!');
+            setTimeout(() => {
+                hatchEgg();
+            }, eggTimer);
         }
-      } else {
-        alert('MetaMask is not installed!');
-      }
-    }
 
-    document.getElementById('connectWalletBtn').addEventListener('click', connectWalletAndReward);
-  </script>
+        function hatchEgg() {
+            document.querySelector('.egg').style.display = 'none';
+            document.querySelector('.parrot').style.display = 'block';
+            document.getElementById('message').textContent = "Apple the Parrot has hatched!";
+            showSparkles();
+
+            // Reward after hatching
+            if (!rewardGiven) {
+                document.getElementById('reward').textContent = "Congrats! You've earned 5 Adge Badge and 5 Apple Conyer Coins!";
+                rewardGiven = true;
+            }
+
+            setTimeout(() => {
+                document.getElementById('reward').textContent = '';
+                document.getElementById('message').textContent = "Give Apple light to help it grow!";
+            }, 3000);
+        }
+
+        function showSparkles() {
+            const sparkles = document.querySelector('.sparkles');
+            sparkles.style.display = 'block';
+        }
+
+        function giveLight() {
+            if (eggHatched && !lightGiven) {
+                document.getElementById('message').textContent = "Apple is happy! You gave it light!";
+                lightGiven = true;
+                setTimeout(() => {
+                    document.getElementById('message').textContent = "Apple is waiting for food!";
+                }, 3000);
+            }
+        }
+
+        // Countdown for 24-hour timer
+        function updateCountdown() {
+            let timeLeft = eggTimer;
+            let hours = Math.floor(timeLeft / 3600000);
+            let minutes = Math.floor((timeLeft % 3600000) / 60000);
+            let seconds = Math.floor((timeLeft % 60000) / 1000);
+            
+            document.getElementById('countdown').textContent = `Next light available in: ${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateCountdown, 1000);
+    </script>
 
 </body>
 </html>
