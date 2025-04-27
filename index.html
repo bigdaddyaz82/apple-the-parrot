@@ -1,238 +1,122 @@
-# <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple the Parrot - Crypto Carnival</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; color: #333; }
-        .button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 18px; }
-        .header { font-size: 36px; color: #2c3e50; margin-top: 50px; }
-        .sub-header { font-size: 24px; color: #7f8c8d; }
-        .game-container { display: none; }
-        .reward { color: #27ae60; font-size: 22px; margin-top: 20px; }
-        .credits { font-size: 16px; color: #7f8c8d; margin-top: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apple the Parrot - Crypto Carnival</title>
+  <style>
+    body {
+      background-color: #d0f0c0;
+      font-family: 'Press Start 2P', cursive, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .game-container {
+      background: #fff;
+      border: 5px solid #000;
+      border-radius: 15px;
+      padding: 20px;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    .button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+    }
+    .egg, .parrot {
+      font-size: 80px;
+      margin: 20px 0;
+    }
+    .reward-animation {
+      font-size: 20px;
+      color: #FF5722;
+      margin-top: 15px;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="intro-screen">
-        <h1 class="header">Welcome to Apple the Parrot!</h1>
-        <p class="sub-header">Created by Big Daddy AZ, Crypto Carnival Entertainment</p>
-        <button class="button" onclick="startAdventure()">Start Adventure</button>
-        <p class="credits">Jump in early, big rewards coming!!!</p>
+  <h1>Apple the Parrot</h1>
+  <p>Created by Big Daddy AC | Crypto Carnival Entertainment</p>
+
+  <div class="game-container">
+    <div id="game-stage">
+      <div class="egg">🥚</div>
+      <p>Click the button to collect your egg!</p>
+      <button class="button" onclick="collectEgg()">Collect Egg</button>
     </div>
+    <br>
+    <button id="connectWalletBtn" class="button">Connect Wallet & Get Reward</button>
+    <div id="rewardMessage" class="reward-animation"></div>
+  </div>
 
-    <div class="game-container">
-        <h2>You're about to hatch your own parrot!</h2>
-        <button class="button" onclick="connectWallet()">Connect Wallet</button>
-       <script>
+  <script>
+    let eggCollected = false;
+    let daysWithEgg = 0;
     let eggHatched = false;
-    let parrotHappy = 50;  // 0 to 100 scale
-    let lightLevel = 0; // 0 to 10 scale (light exposure)
+    let parrotFed = false;
+    let walletConnected = false;
 
-    function startAdventure() {
-        document.querySelector('.intro-screen').style.display = 'none';
-        document.querySelector('.game-container').style.display = 'block';
-        document.getElementById('reward-message').innerHTML = "Your journey begins!";
-        setTimeout(startHatching, 2000); // Egg hatching after 2 seconds
-    }
-
-    function startHatching() {
-        eggHatched = true;
-        document.getElementById('reward-message').innerHTML = "Egg is hatching!";
-        setTimeout(updateParrotStatus, 3000); // Hatching process 3 seconds
-    }
-
-    function updateParrotStatus() {
-        if (eggHatched) {
-            document.getElementById('reward-message').innerHTML = "Apple the Parrot is born!";
-            document.getElementById('parrotStatus').style.display = 'block';
-            updateHappiness();
-        }
-    }
-
-    function feedParrot() {
-        if (eggHatched) {
-            parrotHappy = Math.min(parrotHappy + 10, 100); // Increase happiness
-            document.getElementById('happinessLevel').innerText = parrotHappy + "%";
-            checkParrotMood();
-        }
+    function collectEgg() {
+      if (!eggCollected) {
+        document.getElementById('game-stage').innerHTML = `
+          <div class="egg">🥚</div>
+          <p>You've collected an egg! Come back daily to give it light!</p>
+          <button class="button" onclick="giveLight()">Give Light</button>
+        `;
+        eggCollected = true;
+      }
     }
 
     function giveLight() {
-        if (eggHatched) {
-            lightLevel = Math.min(lightLevel + 1, 10); // Increase light level
-            document.getElementById('reward-message').innerHTML = "Apple is getting some sunlight!";
-            checkParrotMood();
-        }
+      daysWithEgg++;
+      if (daysWithEgg >= 3 && !eggHatched) {
+        hatchEgg();
+      } else {
+        alert(`You gave light to your egg! Days with light: ${daysWithEgg}`);
+      }
     }
 
-    function checkParrotMood() {
-        if (parrotHappy > 80 && lightLevel > 5) {
-            document.getElementById('reward-message').innerHTML = "Apple is so happy! Big rewards ahead!";
-        } else if (parrotHappy < 50 || lightLevel < 3) {
-            document.getElementById('reward-message').innerHTML = "Apple looks sad... Try feeding and lighting up more.";
-        } else {
-            document.getElementById('reward-message').innerHTML = "Apple seems content!";
-        }
+    function hatchEgg() {
+      eggHatched = true;
+      document.getElementById('game-stage').innerHTML = `
+        <div class="parrot">🦜</div>
+        <p>Your egg has hatched into Apple the Parrot!</p>
+        <button class="button" onclick="feedParrot()">Feed Apple</button>
+      `;
     }
 
-    function connectWallet() {
-        // Simulate wallet connection
-        const walletConnected = true;
-        if(walletConnected) {
-            document.getElementById('reward-message').innerHTML = "You have received: 10 Adge Badge Tokens, 5 Apple Conyer Coins, and 5 Aj Badge!";
-        } else {
-            document.getElementById('reward-message').innerHTML = "Please connect your wallet to receive your rewards.";
-        }
+    function feedParrot() {
+      parrotFed = true;
+      alert("Apple the Parrot is happy! You earn bigger bonuses!");
     }
-</script><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple the Parrot Game</title>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.0.0/dist/ethers.umd.min.js"></script>
-</head>
-<body>
-    <h1>Welcome to Apple the Parrot!</h1>
-    <p>Connect your wallet to start your adventure!</p>
-    
-    <!-- Connect Wallet Button -->
-    <button onclick="connectWallet()">Connect Wallet</button>
 
-    <script>
-        // Function to connect wallet using MetaMask or any Ethereum-compatible wallet
-        async function connectWallet(<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple the Parrot Game</title>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.0.0/dist/ethers.umd.min.js"></script>
-</head>
-<body>
-    <h1>Welcome to Apple the Parrot!</h1>
-    <p>Connect your wallet to start your adventure!</p>
-    
-    <!-- Connect Wallet Button -->
-    <button onclick="connectWallet()">Connect Wallet</button>
-    
-    <!-- Game Interface -->
-    <div id="game-container">
-        <button id="hatchButton" onclick="startHatching()">Start Hatching</button>
-        <p id="gameStatus">You need to hatch your egg first. Keep it warm!</p>
-        <div id="eggStage" style="display:none;">
-            <p>Your egg is hatching... Wait until it turns into a parrot!</p>
-        </div>
-        <div id="parrotStage" style="display:none;">
-            <p>Apple the Parrot is here! You can now feed it!</p>
-            <button onclick="feedParrot()">Feed Apple</button>
-        </div>
-    </div>
-
-    <script>
-        let userAddress = "";
-        let eggStageComplete = false;
-        let appleIsHappy = false;
-
-        // Function to connect wallet using MetaMask or any Ethereum-compatible wallet
-        async function connectWallet() {
-            if (window.ethereum) {
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                const signer = provider.getSigner();
-                userAddress = await signer.getAddress();
-                alert("Connected wallet: " + userAddress);
-                return signer;
-            } else {
-                alert("Please install MetaMask!");
-            }
+    async function connectWalletAndReward() {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+          const userAddress = accounts[0];
+          walletConnected = true;
+          document.getElementById('rewardMessage').innerText =
+            `Wallet Connected: ${userAddress}
+            You earned 5 Adge Badge + 5 Apple Conyer Coins!`;
+        } catch (error) {
+          console.error(error);
+          alert('Connection failed!');
         }
+      } else {
+        alert('MetaMask is not installed!');
+      }
+    }
 
-        // Start the hatching process
-        function startHatching() {
-            document.getElementById("gameStatus").innerText = "Your egg is hatching... Please wait.";
-            document.getElementById("eggStage").style.display = "block";
-            setTimeout(() => {
-                document.getElementById("eggStage").style.display = "none";
-                document.getElementById("parrotStage").style.display = "block";
-                eggStageComplete = true;
-                document.getElementById("gameStatus").innerText = "Apple the Parrot is ready to be fed!";
-            }, 5000); // 5 seconds for demo, can be adjusted
-        }
-
-        // Feed Apple the Parrot
-        function feedParrot() {
-            if (eggStageComplete) {
-                appleIsHappy = true;
-                document.getElementById("gameStatus").innerText = "Apple is happy now! You've earned a reward!";
-                giveReward();
-            } else {
-                alert("Please hatch the egg first!");
-            }
-        }
-
-        // Reward the user with tokens
-        function giveReward() {
-            alert("Rewarding you with 10 Adge Badge tokens and 5 Apple Conyer coins!");
-            // Here you can add your token distribution logic
-        }
-    </script>
-</body>
-</html>) {
-            if (window.ethereum) {
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send("eth_requestAccounts", []);
-                const signer = provider.getSigner();
-                const address = await signer.getAddress();
-                alert("Connected wallet: " + address);
-                // You can use the address for further actions, like rewarding users with tokens
-                return signer;
-            } else {
-                alert("Please install MetaMask!");
-            }
-        }
-    </script>
-</body>
-</html>
-
-<button class="button" onclick="feedParrot()">Feed Apple</button>
-<button class="button" onclick="giveLight()">Give Light to Apple</button> <div class="reward" id="reward-message"></div>
-
-        <!-- This is where the game logic like egg hatching, feeding, etc. would go -->
-        <div id="parrotStatus" style="display:none;">
-            <p>Your parrot, Apple, is growing!</p>
-            <p>Apple's happiness: <span id="happinessLevel">75%</span></p>
-        </div>
-    </div>
-
-    <div class="credits">
-        <p>APPLE THE PARROT is brought to you by BIGDADDYAZ82 And the Crypto Carnival..</p>
-        <p>Multiple games, multiple tokens Cash out directly to your coinbase or MetaMask wallets</p>
-        <p>Created by BigDaddyAZ82 Coming June 2025 SOB-X affiliated sponsored by- Reynolds Painting & Resurfacing LLC</p>
-    </div>
-
-    <script>
-        function startAdventure() {
-            document.querySelector('.intro-screen').style.display = 'none';
-            document.querySelector('.game-container').style.display = 'block';
-        }
-        
-        function connectWallet() {
-            // Simulate wallet connection
-            const walletConnected = true;
-            if(walletConnected) {
-                // Simulate token reward after connecting wallet
-                document.getElementById('reward-message').innerHTML = "You have received: 10 Adge Badge Tokens, 5 Apple Conyer Coins, and 5 Aj Badge!";
-                // Add the real reward logic here (e.g., web3.js, ethers.js to transfer tokens).
-                document.getElementById('parrotStatus').style.display = 'block';
-            } else {
-                document.getElementById('reward-message').innerHTML = "Please connect your wallet to receive your rewards.";
-            }
-        }
-    </script>
+    document.getElementById('connectWalletBtn').addEventListener('click', connectWalletAndReward);
+  </script>
 
 </body>
 </html>
