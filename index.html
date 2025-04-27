@@ -83,6 +83,7 @@
 
     <button class="button" onclick="startHatching()">Start Hatching</button>
     <button class="button" onclick="giveLight()">Give Light</button>
+    <button class="button" onclick="feedParrot()">Feed Apple</button>
 
     <p id="status"></p>
     
@@ -99,6 +100,10 @@
     <div class="balloon" style="left: 25%; animation-duration: 14s;"></div>
     <div class="balloon" style="left: 45%; animation-duration: 16s;"></div>
     <div class="balloon" style="left: 65%; animation-duration: 18s;"></div>
+
+    <h2>Token Information</h2>
+    <p>SOB-X Token Contract: <a href="https://basescan.org/address/SOBX_CONTRACT_ADDRESS" target="_blank">SOB-X Contract</a></p>
+    <p>Apple Conyer Coin Contract: <a href="https://basescan.org/address/APPLE_CONYER_CONTRACT_ADDRESS" target="_blank">Apple Conyer Coin Contract</a></p>
     
     <script>
         let eggHatched = false;
@@ -131,6 +136,16 @@
             } else {
                 document.getElementById("status").innerHTML = `Light given: ${lightGiven} day(s).`;
             }
+        }
+
+        function feedParrot() {
+            if (!eggHatched) {
+                document.getElementById("status").innerHTML = "You can't feed Apple until it hatches!";
+                return;
+            }
+
+            document.getElementById("status").innerHTML = "Apple has been fed!";
+            // Implement reward mechanism or token transfer here
         }
 
         function checkHatchTime() {
