@@ -6,145 +6,106 @@
     <title>Apple the Parrot</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #9eff99;
             text-align: center;
-            background-color: #2ecc71;
-            padding-top: 20px;
+            padding: 20px;
         }
-
-        h1 {
-            font-size: 2em;
+        .button {
+            background-color: #4CAF50;
+            border: none;
             color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px;
         }
-
-        .egg, .parrot {
-            display: none;
-            width: 200px;
-            height: 200px;
+        .footer {
             margin-top: 20px;
         }
-
         .egg {
-            background-color: yellow;
+            width: 200px;
+            height: 300px;
+            background-color: #fff;
             border-radius: 50%;
-        }
-
-        .parrot {
-            background-color: green;
-            border-radius: 50%;
+            margin: 10px auto;
             position: relative;
         }
-
-        .button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .reward {
-            font-size: 1.5em;
-            margin-top: 20px;
-        }
-
-        .countdown {
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-
-        .sparkles {
-            position: absolute;
-            animation: sparkle 1.5s infinite;
-            top: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        @keyframes sparkle {
-            0% { opacity: 0; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-            100% { opacity: 0; transform: scale(0.8); }
+        .egg img {
+            width: 100%;
         }
     </style>
 </head>
 <body>
-
     <h1>Apple the Parrot Game</h1>
-    <div class="egg"></div>
-    <div class="parrot">
-        <div class="sparkles"></div>
+    <p>Start by hatching your egg and taking care of Apple!</p>
+
+    <div id="egg" class="egg">
+        <img id="eggImage" src="egg.png" alt="Egg Image">
     </div>
 
-    <p id="message">Hit the button to hatch your egg!</p>
+    <button class="button" onclick="startHatching()">Start Hatching</button>
+    <button class="button" onclick="giveLight()">Give Light</button>
+
+    <p id="status"></p>
     
-    <button class="button" onclick="startGame()">Start</button>
-    
-    <p id="reward" class="reward"></p>
-    <p id="countdown" class="countdown"></p>
+    <div class="footer">
+        <p>Created by BigDaddyAZ for Crypto Carnival Entertainment</p>
+        <p>S.O.B., SpaceX Affiliated and Sponsored by Reynolds Painting & Resurfacing, LLC</p>
+        <p><button class="button" onclick="connectWallet()">Connect Wallet</button></p>
+    </div>
 
     <script>
         let eggHatched = false;
-        let eggTimer = 24 * 60 * 60 * 1000; // 24 hours
-        let lightGiven = false;
-        let rewardGiven = false;
+        let lightGiven = 0;
+        let hatchTime = 0;
+        let hatchTimer;
 
-        function startGame() {
-            document.querySelector('.egg').style.display = 'block';
-            document.getElementById('message').textContent = "Waiting to hatch...";
-
-            setTimeout(() => {
-                hatchEgg();
-            }, eggTimer);
-        }
-
-        function hatchEgg() {
-            document.querySelector('.egg').style.display = 'none';
-            document.querySelector('.parrot').style.display = 'block';
-            document.getElementById('message').textContent = "Apple the Parrot has hatched!";
-            showSparkles();
-
-            // Reward after hatching
-            if (!rewardGiven) {
-                document.getElementById('reward').textContent = "Congrats! You've earned 5 Adge Badge and 5 Apple Conyer Coins!";
-                rewardGiven = true;
+        function startHatching() {
+            if (eggHatched) {
+                document.getElementById("status").innerHTML = "Apple the Parrot is already hatched!";
+                return;
             }
-
-            setTimeout(() => {
-                document.getElementById('reward').textContent = '';
-                document.getElementById('message').textContent = "Give Apple light to help it grow!";
-            }, 3000);
-        }
-
-        function showSparkles() {
-            const sparkles = document.querySelector('.sparkles');
-            sparkles.style.display = 'block';
+            hatchTime = Date.now() + 24 * 60 * 60 * 1000; // 24-hour timer
+            hatchTimer = setInterval(checkHatchTime, 1000);
+            document.getElementById("status").innerHTML = "Your egg is hatching... Please give it light for 24 hours!";
         }
 
         function giveLight() {
-            if (eggHatched && !lightGiven) {
-                document.getElementById('message').textContent = "Apple is happy! You gave it light!";
-                lightGiven = true;
-                setTimeout(() => {
-                    document.getElementById('message').textContent = "Apple is waiting for food!";
-                }, 3000);
+            if (eggHatched) {
+                document.getElementById("status").innerHTML = "Apple the Parrot is already hatched!";
+                return;
+            }
+
+            lightGiven++;
+            if (lightGiven >= 3) {
+                clearInterval(hatchTimer);
+                eggHatched = true;
+                document.getElementById("eggImage").src = "parrot.png";
+                document.getElementById("status").innerHTML = "Apple the Parrot has hatched!";
+            } else {
+                document.getElementById("status").innerHTML = `Light given: ${lightGiven} day(s).`;
             }
         }
 
-        // Countdown for 24-hour timer
-        function updateCountdown() {
-            let timeLeft = eggTimer;
-            let hours = Math.floor(timeLeft / 3600000);
-            let minutes = Math.floor((timeLeft % 3600000) / 60000);
-            let seconds = Math.floor((timeLeft % 60000) / 1000);
-            
-            document.getElementById('countdown').textContent = `Next light available in: ${hours}:${minutes}:${seconds}`;
+        function checkHatchTime() {
+            const timeLeft = hatchTime - Date.now();
+            if (timeLeft <= 0 && !eggHatched) {
+                eggHatched = true;
+                clearInterval(hatchTimer);
+                document.getElementById("eggImage").src = "parrot.png";
+                document.getElementById("status").innerHTML = "Apple the Parrot has hatched!";
+            }
         }
 
-        setInterval(updateCountdown, 1000);
+        function connectWallet() {
+            // Your wallet connection logic here
+            alert("Connecting wallet... You will receive 5 Adge Badge and 5 Apple Conyer coins.");
+        }
     </script>
-
 </body>
 </html>
