@@ -1,121 +1,129 @@
-# play APPLE THE PARROT and watch your crypto earnings fly high
-
-
-<!DOCTYPE html>
-
+# <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Apple the Parrot - Crypto Carnival</title>
-
     <style>
-
         body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; color: #333; }
-
         .button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; font-size: 18px; }
-
         .header { font-size: 36px; color: #2c3e50; margin-top: 50px; }
-
         .sub-header { font-size: 24px; color: #7f8c8d; }
-
         .game-container { display: none; }
-
         .reward { color: #27ae60; font-size: 22px; margin-top: 20px; }
-
+        .credits { font-size: 16px; color: #7f8c8d; margin-top: 20px; }
     </style>
-
 </head>
-
 <body>
 
-
-
     <div class="intro-screen">
-
         <h1 class="header">Welcome to Apple the Parrot!</h1>
-
         <p class="sub-header">Created by Big Daddy AZ, Crypto Carnival Entertainment</p>
-
         <button class="button" onclick="startAdventure()">Start Adventure</button>
-
+        <p class="credits">Jump in early, big rewards coming!!!</p>
     </div>
-
-
 
     <div class="game-container">
-
-        <!-- Game screen will be here after intro -->
-
         <h2>You're about to hatch your own parrot!</h2>
-
         <button class="button" onclick="connectWallet()">Connect Wallet</button>
+       <script>
+    let eggHatched = false;
+    let parrotHappy = 50;  // 0 to 100 scale
+    let lightLevel = 0; // 0 to 10 scale (light exposure)
 
-        <div class="reward" id="reward-message"></div>
+    function startAdventure() {
+        document.querySelector('.intro-screen').style.display = 'none';
+        document.querySelector('.game-container').style.display = 'block';
+        document.getElementById('reward-message').innerHTML = "Your journey begins!";
+        setTimeout(startHatching, 2000); // Egg hatching after 2 seconds
+    }
 
+    function startHatching() {
+        eggHatched = true;
+        document.getElementById('reward-message').innerHTML = "Egg is hatching!";
+        setTimeout(updateParrotStatus, 3000); // Hatching process 3 seconds
+    }
+
+    function updateParrotStatus() {
+        if (eggHatched) {
+            document.getElementById('reward-message').innerHTML = "Apple the Parrot is born!";
+            document.getElementById('parrotStatus').style.display = 'block';
+            updateHappiness();
+        }
+    }
+
+    function feedParrot() {
+        if (eggHatched) {
+            parrotHappy = Math.min(parrotHappy + 10, 100); // Increase happiness
+            document.getElementById('happinessLevel').innerText = parrotHappy + "%";
+            checkParrotMood();
+        }
+    }
+
+    function giveLight() {
+        if (eggHatched) {
+            lightLevel = Math.min(lightLevel + 1, 10); // Increase light level
+            document.getElementById('reward-message').innerHTML = "Apple is getting some sunlight!";
+            checkParrotMood();
+        }
+    }
+
+    function checkParrotMood() {
+        if (parrotHappy > 80 && lightLevel > 5) {
+            document.getElementById('reward-message').innerHTML = "Apple is so happy! Big rewards ahead!";
+        } else if (parrotHappy < 50 || lightLevel < 3) {
+            document.getElementById('reward-message').innerHTML = "Apple looks sad... Try feeding and lighting up more.";
+        } else {
+            document.getElementById('reward-message').innerHTML = "Apple seems content!";
+        }
+    }
+
+    function connectWallet() {
+        // Simulate wallet connection
+        const walletConnected = true;
+        if(walletConnected) {
+            document.getElementById('reward-message').innerHTML = "You have received: 10 Adge Badge Tokens, 5 Apple Conyer Coins, and 5 Aj Badge!";
+        } else {
+            document.getElementById('reward-message').innerHTML = "Please connect your wallet to receive your rewards.";
+        }
+    }
+</script>
+
+<button class="button" onclick="feedParrot()">Feed Apple</button>
+<button class="button" onclick="giveLight()">Give Light to Apple</button> <div class="reward" id="reward-message"></div>
+
+        <!-- This is where the game logic like egg hatching, feeding, etc. would go -->
+        <div id="parrotStatus" style="display:none;">
+            <p>Your parrot, Apple, is growing!</p>
+            <p>Apple's happiness: <span id="happinessLevel">75%</span></p>
+        </div>
     </div>
 
-
+    <div class="credits">
+        <p>APPLE THE PARROT is brought to you by BIGDADDYAZ82 And the Crypto Carnival..</p>
+        <p>Multiple games, multiple tokens Cash out directly to your coinbase or MetaMask wallets</p>
+        <p>Created by BigDaddyAZ82 Coming June 2025 SOB-X affiliated sponsored by- Reynolds Painting & Resurfacing LLC</p>
+    </div>
 
     <script>
-
         function startAdventure() {
-
             document.querySelector('.intro-screen').style.display = 'none';
-
             document.querySelector('.game-container').style.display = 'block';
-
         }
-
         
-
         function connectWallet() {
-
             // Simulate wallet connection
-
             const walletConnected = true;
-
             if(walletConnected) {
-
                 // Simulate token reward after connecting wallet
-
-                document.getElementById('reward-message').innerHTML = "You have received:  5 Apple Conyer Coins, and 5 Aj Badge!";
-
+                document.getElementById('reward-message').innerHTML = "You have received: 10 Adge Badge Tokens, 5 Apple Conyer Coins, and 5 Aj Badge!";
                 // Add the real reward logic here (e.g., web3.js, ethers.js to transfer tokens).
-
+                document.getElementById('parrotStatus').style.display = 'block';
             } else {
-
                 document.getElementById('reward-message').innerHTML = "Please connect your wallet to receive your rewards.";
-
             }
-
         }
-
     </script>
-
-
-
-</body>
-
-</html>
-
-
-
-
-Jump in early, big rewards coming!!! 
-APPLE THE PARROT is brought to you by BIGDADDYAZ82 
-And the Crypto Carnival.. Multiple games, multiple tokens
-Cash out directly to your coinbase or MetaMask wallets
-
-       Created by BigDaddyAZ82    Coming June 2025
-            SOB-X affiliated 
-  sponsored by- Reynolds Painting & Resurfacing LLC 
-    updateGame();
-  </script>
 
 </body>
 </html>
