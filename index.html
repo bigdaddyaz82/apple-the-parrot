@@ -87,7 +87,116 @@
             document.getElementById('reward-message').innerHTML = "Please connect your wallet to receive your rewards.";
         }
     }
-</script>
+</script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple the Parrot Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.0.0/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to Apple the Parrot!</h1>
+    <p>Connect your wallet to start your adventure!</p>
+    
+    <!-- Connect Wallet Button -->
+    <button onclick="connectWallet()">Connect Wallet</button>
+
+    <script>
+        // Function to connect wallet using MetaMask or any Ethereum-compatible wallet
+        async function connectWallet(<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple the Parrot Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.0.0/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to Apple the Parrot!</h1>
+    <p>Connect your wallet to start your adventure!</p>
+    
+    <!-- Connect Wallet Button -->
+    <button onclick="connectWallet()">Connect Wallet</button>
+    
+    <!-- Game Interface -->
+    <div id="game-container">
+        <button id="hatchButton" onclick="startHatching()">Start Hatching</button>
+        <p id="gameStatus">You need to hatch your egg first. Keep it warm!</p>
+        <div id="eggStage" style="display:none;">
+            <p>Your egg is hatching... Wait until it turns into a parrot!</p>
+        </div>
+        <div id="parrotStage" style="display:none;">
+            <p>Apple the Parrot is here! You can now feed it!</p>
+            <button onclick="feedParrot()">Feed Apple</button>
+        </div>
+    </div>
+
+    <script>
+        let userAddress = "";
+        let eggStageComplete = false;
+        let appleIsHappy = false;
+
+        // Function to connect wallet using MetaMask or any Ethereum-compatible wallet
+        async function connectWallet() {
+            if (window.ethereum) {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                userAddress = await signer.getAddress();
+                alert("Connected wallet: " + userAddress);
+                return signer;
+            } else {
+                alert("Please install MetaMask!");
+            }
+        }
+
+        // Start the hatching process
+        function startHatching() {
+            document.getElementById("gameStatus").innerText = "Your egg is hatching... Please wait.";
+            document.getElementById("eggStage").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("eggStage").style.display = "none";
+                document.getElementById("parrotStage").style.display = "block";
+                eggStageComplete = true;
+                document.getElementById("gameStatus").innerText = "Apple the Parrot is ready to be fed!";
+            }, 5000); // 5 seconds for demo, can be adjusted
+        }
+
+        // Feed Apple the Parrot
+        function feedParrot() {
+            if (eggStageComplete) {
+                appleIsHappy = true;
+                document.getElementById("gameStatus").innerText = "Apple is happy now! You've earned a reward!";
+                giveReward();
+            } else {
+                alert("Please hatch the egg first!");
+            }
+        }
+
+        // Reward the user with tokens
+        function giveReward() {
+            alert("Rewarding you with 10 Adge Badge tokens and 5 Apple Conyer coins!");
+            // Here you can add your token distribution logic
+        }
+    </script>
+</body>
+</html>) {
+            if (window.ethereum) {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                const address = await signer.getAddress();
+                alert("Connected wallet: " + address);
+                // You can use the address for further actions, like rewarding users with tokens
+                return signer;
+            } else {
+                alert("Please install MetaMask!");
+            }
+        }
+    </script>
+</body>
+</html>
 
 <button class="button" onclick="feedParrot()">Feed Apple</button>
 <button class="button" onclick="giveLight()">Give Light to Apple</button> <div class="reward" id="reward-message"></div>
