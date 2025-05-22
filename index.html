@@ -1,45 +1,140 @@
-<style>
-    .content-wrapper {
-        border: 10px solid yellow;
-        padding: 20px;
-        border-radius: 20px;
-        margin: 10px auto;
-        width: 90%;
-        max-width: 1200px;
-        background-color: #fff;
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple the Parrot - Hatch & Grow!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon"> <!-- Create a favicon -->
+</head>
+<body>
 
-<div class="content-wrapper">
-    <!-- Your existing content goes here (everything inside the <body>) -->
-    <h1>Apple the Parrot Game</h1>
-    <p>Start by hatching your egg and taking care of Apple!</p>
+    <header class="site-header">
+        <nav class="main-nav">
+            <div class="logo-container">
+                <img src="images/logo-apple-parrot.png" alt="Apple the Parrot Logo" class="logo-img">
+                <span class="site-title">Apple the Parrot</span>
+            </div>
+            <div class="wallet-info-container" id="walletInfoArea">
+                <span id="networkName" class="network-status" style="display:none;"></span>
+                <span id="walletAddress" class="wallet-address-display" style="display:none;">Connected: 0x...</span>
+                <span id="sobxBalanceDisplay" class="token-balance-display" style="display:none;">SOB-X: 0</span>
+                <span id="appleCoinBalanceDisplay" class="token-balance-display" style="display:none;">Apple Coin: 0</span>
+                <button id="connectWalletBtn" class="button button-primary">Connect Wallet</button>
+            </div>
+        </nav>
+    </header>
 
-    <div id="egg" class="egg">
-        <img id="eggImage" src="egg.png" alt="Egg Image">
-    </div>
+    <main class="site-main">
+        <div class="content-wrapper">
+            <section class="hero-section">
+                <h1>Meet Apple the Parrot!</h1>
+                <p class="subtitle">Hatch your very own digital parrot. Nurture Apple from egg to adulthood and earn rewards!</p>
+                 <div id="initialLoadingMessage" class="loading-message" style="display:none;">Loading parrot data...</div>
+            </section>
 
-    <button class="button" onclick="startHatching()">Start Hatching</button>
-    <button class="button" onclick="giveLight()">Give Light</button>
-    <button class="button" onclick="feedParrot()">Feed Apple</button>
+            <section id="gameInterface" class="game-section" style="display:none;">
+                <h2 class="section-title">Apple's Journey</h2>
+                <div class="parrot-display-area">
+                    <div id="parrotVisual" class="parrot-visual">
+                        <img id="parrotImage" src="images/egg.png" alt="Apple the Parrot">
+                    </div>
+                    <div class="parrot-stats">
+                        <h3>Apple's Status</h3>
+                        <p>Stage: <span id="parrotStage">Egg</span></p>
+                        <p>Happiness: <span id="parrotHappiness">--%</span></p>
+                        <p>Hunger: <span id="parrotHunger">--%</span></p>
+                        <!-- Add more relevant stats for a parrot -->
+                        <p>Last Interaction: <span id="lastInteraction">--</span></p>
+                    </div>
+                </div>
 
-    <p id="status"></p>
-    
-    <div class="footer">
-        <p>Created by BigDaddyAZ82 for Crypto Carnival Cingdom. CCC 2025</p>
-        <p>SOB-X Affiliated and Sponsored by 602-526-7364 Reynolds Painting & Resurfacing, LLC</p>
-    </div>
+                <div class="game-actions">
+                    <h3>Interact with Apple</h3>
+                    <div class="action-buttons-grid">
+                        <button id="hatchEggBtn" class="button game-action-button" data-action="hatch">
+                            <img src="images/icon-hatch.svg" alt="" class="button-icon"> Hatch Egg
+                        </button>
+                        <button id="feedParrotBtn" class="button game-action-button" data-action="feed">
+                            <img src="images/icon-feed-parrot.svg" alt="" class="button-icon"> Feed Apple (<span id="feedCost">--</span> SOB-X)
+                        </button>
+                        <button id="playWithParrotBtn" class="button game-action-button" data-action="play">
+                            <img src="images/icon-play.svg" alt="" class="button-icon"> Play with Apple
+                        </button>
+                        <button id="teachTrickBtn" class="button game-action-button" data-action="teach">
+                            <img src="images/icon-teach.svg" alt="" class="button-icon"> Teach Trick
+                        </button>
+                        <!-- Add more actions as needed -->
+                    </div>
+                    <div id="sobxApproveSectionParrot" style="display:none;">
+                        <p>Feeding Apple requires SOB-X. Please approve spending.</p>
+                        <input type="number" id="sobxApproveAmountParrot" placeholder="Amount to approve" value="500">
+                        <button id="approveSobxBtnParrot" class="button button-secondary">Approve SOB-X</button>
+                      </div>
+                </div>
 
-    <div class="banner">
-        <p>azreynoldspaintingllc@gmail.com Sponsored by Reynolds Painting & Resurfacing LLC!</p>
-    </div>
+                <div class="rewards-section">
+                    <h3>Your Rewards</h3>
+                    <p>Claimable Apple Coins: <strong id="claimableAppleCoins">0</strong></p>
+                    <button id="claimAppleCoinsBtn" class="button button-cta">Claim Apple Coins!</button>
+                </div>
 
-    <div class="balloon" style="left: 5%; animation-duration: 12s;"></div>
-    <div class="balloon" style="left: 25%; animation-duration: 14s;"></div>
-    <div class="balloon" style="left: 45%; animation-duration: 16s;"></div>
-    <div class="balloon" style="left: 65%; animation-duration: 18s;"></div>
+                <div id="notificationsAreaParrot" class="notifications-panel">
+                    <p id="status" class="notification-placeholder">Game messages and Apple's status will appear here.</p>
+                </div>
+            </section>
 
-    <h2>Token Information</h2>
-    <p>SOB-X Token Contract: <a href="https://basescan.org/address/SOBX_CONTRACT_ADDRESS" target="_blank">SOB-X Contract</a></p>
-    <p>Apple Conyer Coin Contract: <a href="https://basescan.org/address/APPLE_CONYER_CONTRACT_ADDRESS" target="_blank">Apple Conyer Coin Contract</a></p>
-</div>
+            <section class="token-info-section">
+                <h2 class="section-title">Token Information</h2>
+                <div class="token-details">
+                    <p>
+                        <strong>SOB-X Token:</strong> Powering the ecosystem.
+                        <a href="https://basescan.org/address/[YOUR_SOBX_CONTRACT_ADDRESS]" target="_blank" rel="noopener noreferrer" class="token-link">View on BaseScan</a>
+                        <code id="sobxTokenAddressForCopy">[YOUR_SOBX_CONTRACT_ADDRESS]</code>
+                        <button class="button-copy" onclick="copyToClipboard('sobxTokenAddressForCopy')">Copy</button>
+                    </p>
+                    <p>
+                        <strong>Apple Conyer Coin (ACC):</strong> Earned by caring for Apple.
+                        <a href="https://basescan.org/address/[YOUR_APPLE_CONYER_COIN_ADDRESS]" target="_blank" rel="noopener noreferrer" class="token-link">View on BaseScan</a>
+                        <code id="appleCoinAddressForCopy">[YOUR_APPLE_CONYER_COIN_ADDRESS]</code>
+                        <button class="button-copy" onclick="copyToClipboard('appleCoinAddressForCopy')">Copy</button>
+                    </p>
+                </div>
+            </section>
+
+            <section class="sponsors-section">
+                <h2 class="section-title">Our Valued Sponsors</h2>
+                <div class="sponsor-logos">
+                    <!-- Add sponsor logos here if available -->
+                    <img src="images/reynolds-painting-logo.png" alt="Reynolds Painting & Resurfacing, LLC" class="sponsor-logo">
+                </div>
+                <p>SOB-X Affiliated and Proudly Sponsored by Reynolds Painting & Resurfacing, LLC.</p>
+                <p>Contact: <a href="tel:6025267364">602-526-7364</a> | <a href="mailto:azreynoldspaintingllc@gmail.com">azreynoldspaintingllc@gmail.com</a></p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>Created by BigDaddyAZ82 for Crypto Carnival Cingdom (CCC) © <span id="currentYear">2024</span></p>
+            <div class="footer-links">
+                 <a href="[LINK_TO_GAME_CONTRACT_ON_BASESCAN]" target="_blank" rel="noopener noreferrer">View Game Contract</a>
+                <span>•</span>
+                <a href="[LINK_TO_TERMS]" target="_blank" rel="noopener noreferrer">Terms</a>
+                 <span>•</span>
+                <a href="[YOUR_TWITTER_LINK]" target="_blank" rel="noopener noreferrer">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Balloon animations (can be moved to JS for more control if needed) -->
+    <div class="balloon" style="left: 10%; animation-duration: 12s; background-color: #FFD700;"></div>
+    <div class="balloon" style="left: 30%; animation-duration: 15s; background-color: #FF69B4;"></div>
+    <div class="balloon" style="left: 50%; animation-duration: 13s; background-color: #87CEEB;"></div>
+    <div class="balloon" style="left: 70%; animation-duration: 16s; background-color: #98FB98;"></div>
+    <div class="balloon" style="left: 90%; animation-duration: 14s; background-color: #FFA07A;"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
