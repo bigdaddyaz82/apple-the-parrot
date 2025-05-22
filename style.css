@@ -1,0 +1,340 @@
+/* style.css for Apple the Parrot */
+:root {
+    --primary-color: #008080; /* Teal - good for parrots/tropical */
+    --secondary-color: #FFD700; /* Gold/Yellow */
+    --accent-color: #FF6347; /* Tomato Red */
+    --background-color: #f0f8ff; /* AliceBlue - light and airy */
+    --content-bg-color: #ffffff;
+    --text-color: #333333;
+    --light-text-color: #ffffff;
+    --border-color: #dddddd;
+    --font-family: 'Arial', sans-serif; /* Or a more playful font */
+    --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* --- Header & Nav --- */
+.site-header {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    padding: 1rem 2rem;
+    box-shadow: var(--box-shadow);
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 45px;
+    margin-right: 0.75rem;
+}
+
+.site-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.wallet-info-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.wallet-address-display, .token-balance-display, .network-status {
+    font-size: 0.85rem;
+    background-color: rgba(255,255,255,0.15);
+    padding: 0.4rem 0.7rem;
+    border-radius: 5px;
+}
+
+/* --- Buttons --- */
+.button {
+    padding: 0.7rem 1.4rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-weight: bold;
+}
+.button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+.button:active {
+    transform: translateY(0);
+}
+.button-primary {
+    background-color: var(--secondary-color);
+    color: var(--text-color); /* Dark text on yellow can be better */
+}
+.button-primary:hover {
+    background-color: #e6c300; /* Darker yellow */
+}
+.button-cta {
+    background-color: var(--accent-color);
+    color: var(--light-text-color);
+}
+.button-cta:hover {
+    background-color: #e04a30; /* Darker red */
+}
+.button-secondary {
+    background-color: #f8f9fa;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+.button-secondary:hover {
+    background-color: #e9ecef;
+}
+.button-copy {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    border-radius: 4px;
+}
+.button-copy:hover { background-color: #f0f0f0; }
+
+/* --- Main Content --- */
+.site-main {
+    padding: 1rem; /* Less padding on main, more on wrapper */
+}
+
+.content-wrapper {
+    border: 8px solid var(--secondary-color); /* Yellow border */
+    padding: 25px;
+    border-radius: 25px;
+    margin: 20px auto;
+    width: 95%;
+    max-width: 1100px;
+    background-color: var(--content-bg-color);
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.hero-section {
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+}
+.hero-section h1 {
+    color: var(--primary-color);
+    font-size: 2.8rem;
+    margin-bottom: 0.5rem;
+}
+.hero-section .subtitle {
+    font-size: 1.3rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    border-bottom: 2px solid var(--secondary-color);
+    display: inline-block; /* To make border only under text */
+    padding-bottom: 0.5rem;
+}
+
+.game-section, .token-info-section, .sponsors-section {
+    padding: 1.5rem 0; /* More vertical padding within sections */
+    margin-bottom: 2.5rem;
+    text-align: center; /* Center section titles */
+}
+
+/* --- Game Interface Specifics --- */
+.parrot-display-area {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center; /* Vertically align parrot and stats */
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.parrot-visual {
+    text-align: center;
+}
+#parrotImage { /* Target the specific image ID */
+    max-width: 250px; /* Adjust as needed */
+    height: auto;
+    border: 4px solid var(--primary-color);
+    border-radius: 15px;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+    box-shadow: var(--box-shadow);
+}
+
+.parrot-stats {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    min-width: 280px;
+    text-align: left;
+    box-shadow: var(--box-shadow);
+}
+.parrot-stats h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+.parrot-stats p { margin: 0.6rem 0; font-size: 1.05rem; }
+.parrot-stats span { font-weight: bold; color: var(--accent-color); }
+
+.game-actions { margin-bottom: 2.5rem; }
+.game-actions h3 { color: var(--primary-color); margin-bottom: 1.5rem; font-size: 1.5rem; }
+
+.action-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.game-action-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 0.8rem; /* More padding for taller buttons */
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    font-size: 1rem; /* Slightly smaller text if icons are prominent */
+}
+.game-action-button:hover { background-color: #006666; /* Darker teal */ }
+.game-action-button .button-icon {
+    width: 36px; height: 36px; margin-bottom: 0.6rem;
+    /* For SVGs: fill: var(--light-text-color); */
+}
+
+#sobxApproveSectionParrot {
+    margin-top: 1.5rem; padding: 1.2rem; background-color: #fff8e1;
+    border: 1px solid #ffe082; border-radius: 8px;
+}
+#sobxApproveSectionParrot p { margin-bottom: 0.75rem; font-size: 0.95rem; }
+#sobxApproveAmountParrot {
+    padding: 0.6rem; border-radius: 4px; border: 1px solid var(--border-color);
+    margin-right: 0.75rem; width: 160px;
+}
+
+.rewards-section { margin-bottom: 2rem; }
+.rewards-section h3 { color: var(--primary-color); margin-bottom: 1rem; font-size: 1.5rem; }
+.rewards-section p strong { font-size: 1.3rem; color: var(--accent-color); }
+
+.notifications-panel {
+    margin-top: 2rem; padding: 1.2rem; background-color: #e9ecef;
+    border-radius: 8px; min-height: 60px; text-align: left;
+}
+/* Notification styling (success, error, info) similar to Plant Grower */
+.notifications-panel .notification { padding: 0.6rem; margin-bottom: 0.6rem; border-radius: 4px; font-size: 0.95rem; }
+.notifications-panel .notification.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.notifications-panel .notification.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.notifications-panel .notification.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+.notification-placeholder { color: #6c757d; font-style: italic; }
+
+/* --- Token Info & Sponsors --- */
+.token-info-section .token-details p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+.token-info-section code {
+    background-color: #f0f0f0; padding: 0.3rem 0.5rem;
+    border-radius: 4px; font-family: monospace;
+    display: inline-block; margin: 0 0.5rem;
+}
+.token-link { color: var(--primary-color); text-decoration: none; font-weight: bold;}
+.token-link:hover { text-decoration: underline; }
+
+.sponsors-section p { font-size: 1.1rem; margin-bottom: 0.75rem; }
+.sponsors-section a { color: var(--primary-color); }
+.sponsor-logos { margin-bottom: 1.5rem; }
+.sponsor-logo { max-height: 80px; margin: 0 1rem; } /* Adjust size as needed */
+
+
+/* --- Footer --- */
+.site-footer {
+    background-color: #333;
+    color: #ccc;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+}
+.footer-content { max-width: 1000px; margin: 0 auto; }
+.footer-links { margin-top: 0.75rem; margin-bottom: 0.75rem; }
+.footer-links a { color: var(--secondary-color); text-decoration: none; margin: 0 0.6rem; }
+.footer-links a:hover { text-decoration: underline; }
+.footer-links span { margin: 0 0.3rem; }
+
+/* --- Balloons (from your existing style) --- */
+.balloon {
+    width: 50px;
+    height: 65px;
+    background-color: #FFC107; /* Default color, can be overridden inline */
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: fixed; /* Fixed to viewport */
+    bottom: -100px; /* Start off-screen */
+    opacity: 0.7;
+    animation: rise infinite;
+    z-index: -1; /* Behind main content */
+}
+.balloon::before { /* String */
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 20px;
+    background-color: rgba(0,0,0,0.3);
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-120vh) rotate(30deg); /* Rise further up */
+        opacity: 0;
+    }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .main-nav { flex-direction: column; gap: 1rem; }
+    .wallet-info-container { flex-direction: column; align-items: stretch; width: 100%; }
+    .wallet-info-container > * { text-align: center; margin-bottom: 0.5rem; }
+    .hero-section h1 { font-size: 2.2rem; }
+    .section-title { font-size: 1.8rem; }
+    .parrot-display-area { flex-direction: column; align-items: center; }
+    .parrot-visual, .parrot-stats { width: 100%; max-width: 350px; margin-bottom: 1.5rem; }
+    .content-wrapper { padding: 15px; border-width: 5px; }
+                           }
